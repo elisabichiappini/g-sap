@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>GG Effect</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #111;
+      overflow: hidden;
+    }
+
+    .logo {
+      font-size: 10rem;
+      font-weight: bold;
+      color: white;
+      display: flex;
+      gap: 1rem;
+      user-select: none;
+      perspective: 1000px; /* profondità per effetto 3D */
+    }
+
+    .letter {
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <div class="logo">
+    <span class="letter" id="g1">E</span>
+    <span class="letter" id="g2">C</span>
+  </div>
+
+  <!-- Importa GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="./script.js"></script>
+</body>
+</html>
