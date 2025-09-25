@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Effetto Jumbotron GG-style</title>
+  <style>
+    body, html {
+      margin: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #111;
+    }
+    .jumbotron {
+      width: 100%;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    svg {
+      width: 50vw;
+      height: auto;
+      pointer-events: none; /* per far sì che il mouse passi attraverso */
+    }
+    .letter {
+      fill: white;
+      font-family: sans-serif;
+      font-size: 200px;
+    }
+  </style>
+</head>
+<body>
+  <div class="jumbotron" id="jumbo">
+    <svg viewBox="0 0 600 200" id="logoSvg">
+      <text class="letter" id="g1" x="50" y="150">G</text>
+      <text class="letter" id="g2" x="300" y="150">G</text>
+    </svg>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script>
+    const jumbo = document.getElementById("jumbo");
+    const g1 = document.getElementById("g1");
+    const g2 = document.getElementById("g2");
+    const svg = document.getElementById("logoSvg");
+
+    // Punto di riferimento: centro del container
+    function getCenter(el) {
+      const rect = el.getBoundingClientRect();
+      return {
+        x: rect.left + rect.width / 2,
+        y: rect.top + rect.height / 2
+      };
+    }
+
+    let center = getCenter(jumbo);
+
+    window.addEventListener('resize', () => {
+      center = getCenter(jumbo);
+    });
+
+    jumbo.addEventListener("mousemove", (e) => {
+      // calcola offset da centro, normalizzato in [-1,1]
+      const offsetX = (e.clientX - center.x) / center.x;
+      const offsetY = (e.clientY - center.y) / center.y;
+
+      // Applica trasformazioni
+      // Il primo “G” si muove più in un verso, il secondo opposto
+      gsap.to(g1, {
+        x: offsetX * 40,
+        y: offsetY * 40,
+        rotation: offsetX * 15,
+        transformOrigin: "center center",
+        duration: 0.6,
+        ease: "power3.out"
+      });
+      gsap.to(g2, {
+        x: offsetX * -40,
+        y: offsetY * -40,
+        rotation: offsetX * -15,
+        transformOrigin: "center center",
+        duration: 0.6,
+        ease: "power3.out"
+      });
+    });
+
+    // (Opzionale) quando il mouse esce, ritorna allo stato iniziale
+    jumbo.addEventListener("mouseleave", () => {
+      gsap.to([g1, g2], {
+        x: 0,
+        y: 0,
+        rotation: 0,
+        duration: 1,
+        ease: "power3.out"
+      });
+    });
+  </script>
+</body>
+</html>
